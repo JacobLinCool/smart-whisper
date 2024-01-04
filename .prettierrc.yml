@@ -1,0 +1,12 @@
+---
+printWidth: 100
+tabWidth: 4
+useTabs: true
+trailingComma: all
+semi: true
+singleQuote: false
+
+overrides:
+    - files: "*.md"
+      options:
+          useTabs: false

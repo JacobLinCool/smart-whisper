@@ -1,0 +1,43 @@
+{
+	"name": "smart-whisper",
+	"version": "0.0.2",
+	"description": "Whisper.cpp Node.js binding with auto model offloading strategy.",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"keywords": [
+		"whisper",
+		"whisper.cpp",
+		"native",
+		"binding",
+		"addon"
+	],
+	"author": "JacobLinCool <jacoblincool@gmail.com> (https://github.com/JacobLinCool)",
+	"license": "MIT",
+	"gypfile": true,
+	"files": [
+		"dist",
+		"src",
+		"binding.gyp",
+		"whisper.cpp/*.{c,h,cpp,m,cu}",
+		"whisper.cpp/Makefile",
+		"whisper.cpp/LICENSE"
+	],
+	"scripts": {
+		"format": "prettier --ignore-path .gitignore --write .",
+		"makelib": "cd whisper.cpp && make libwhisper.a",
+		"build": "node-gyp rebuild && tsup",
+		"install": "cd whisper.cpp && make libwhisper.a && cd .. && node-gyp rebuild"
+	},
+	"dependencies": {
+		"node-addon-api": "^7.0.0"
+	},
+	"devDependencies": {
+		"@types/node": "^20.10.6",
+		"@types/node-wav": "^0.0.3",
+		"node-wav": "^0.0.2",
+		"prettier": "^3.1.1",
+		"tsup": "^8.0.1",
+		"tsx": "^4.7.0",
+		"typescript": "^5.3.3"
+	}
+}
