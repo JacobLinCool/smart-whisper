@@ -14,6 +14,10 @@ export interface WhisperConfig {
 	gpu: boolean;
 }
 
+/**
+ * The Whisper class is responsible for managing the lifecycle and operations of whisper model.
+ * It handles the loading and offloading of the model, managing transcription tasks, and configuring model parameters.
+ */
 export class Whisper {
 	private _file: string;
 	private _available: WhisperModel | null = null;
@@ -22,6 +26,11 @@ export class Whisper {
 	private _config: WhisperConfig;
 	private _offload_timer: NodeJS.Timeout | null = null;
 
+	/**
+	 * Constructs a new Whisper instance with a specified model file and configuration.
+	 * @param file - The path to the Whisper model file.
+	 * @param config - Optional configuration for the Whisper instance.
+	 */
 	constructor(file: string, config: Partial<WhisperConfig> = {}) {
 		this._file = file;
 		this._config = {
@@ -69,6 +78,14 @@ export class Whisper {
 		return Promise.resolve(this._available);
 	}
 
+	/**
+	 * Loads the whisper model asynchronously.
+	 * If the model is already being loaded, returns the existing one.
+	 *
+	 * You don't need to call this method directly, it's called automatically if necessary when you call {@link Whisper.transcribe}.
+	 *
+	 * @returns A Promise that resolves to the loaded model.
+	 */
 	async load(): Promise<WhisperModel> {
 		if (this._loading !== null) {
 			return this._loading;
@@ -82,6 +99,12 @@ export class Whisper {
 		return this._available;
 	}
 
+	/**
+	 * Transcribes the given PCM audio data using the Whisper model.
+	 * @param pcm - The mono 16k PCM audio data to transcribe.
+	 * @param params - Optional parameters for transcription.
+	 * @returns A promise that resolves to the result of the transcription task.
+	 */
 	async transcribe(
 		pcm: Float32Array,
 		params: Partial<TranscribeParams> = {},

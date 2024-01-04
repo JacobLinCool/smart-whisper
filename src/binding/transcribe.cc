@@ -48,11 +48,16 @@ struct whisper_full_params whisper_full_params_from_js(Napi::Object o) {
 
     if (o.Has("initial_prompt")) {
         std::string initial_prompt = o.Get("initial_prompt").As<Napi::String>().Utf8Value();
-        params.initial_prompt = initial_prompt.c_str();
+        params.initial_prompt = strdup(initial_prompt.c_str());
+    } else {
+        params.initial_prompt = nullptr;
     }
+
     if (o.Has("language")) {
         std::string language = o.Get("language").As<Napi::String>().Utf8Value();
-        params.language = language.c_str();
+        params.language = strdup(language.c_str());
+    } else {
+        params.language = strdup("auto");
     }
 
     if (o.Has("temperature")) {
@@ -101,6 +106,12 @@ class TranscribeWorker : public Napi::AsyncWorker {
     ~TranscribeWorker() {
         delete[] samples;
         // whisper_free_params(&params); will lead to a double free
+        if (params.initial_prompt != nullptr) {
+            free((void *)params.initial_prompt);
+        }
+        if (params.language != nullptr) {
+            free((void *)params.language);
+        }
         if (state != nullptr) {
             whisper_free_state(state);
         }
