@@ -37,6 +37,10 @@ jobs:
                   method: network
               if: matrix.os == 'windows-latest'
 
+            - name: Add msys64 to PATH
+              run: echo "/c/msys64/mingw64/bin:/c/msys64/usr/bin" >> $GITHUB_PATH
+              if: matrix.os == 'windows-latest'
+
             - name: Setup PNPM
               uses: pnpm/action-setup@v2
               with:
