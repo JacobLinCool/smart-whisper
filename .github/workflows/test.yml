@@ -10,12 +10,21 @@ on:
 
 jobs:
     test:
-        name: Test
-        runs-on: ubuntu-latest
+        name: Test (${{ matrix.os }}, Node v${{ matrix.node }})
+        runs-on: ${{ matrix.os }}
+        strategy:
+            matrix:
+                os: [ubuntu-latest, macos-latest, windows-latest]
+                node: [18, 20]
 
         steps:
             - name: Checkout Repository
               uses: actions/checkout@v4
+
+            - name: Install Node.js ${{ matrix.node }}
+              uses: actions/setup-node@v4
+              with:
+                  node-version: ${{ matrix.node }}
 
             - name: Setup PNPM
               uses: pnpm/action-setup@v2
@@ -24,3 +33,6 @@ jobs:
 
             - name: Build All
               run: pnpm makelib && pnpm build
+
+            - name: Test
+              run: pnpm test

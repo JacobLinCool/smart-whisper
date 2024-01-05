@@ -1,0 +1,11 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`model should work 1`] = `
+[
+  {
+    "from": 0,
+    "text": " And so, my fellow Americans, ask not what your country can do for you, ask what you can do for your country.",
+    "to": 10560,
+  },
+]
+`;

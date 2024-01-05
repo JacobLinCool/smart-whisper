@@ -15,7 +15,7 @@ const whisper = new Whisper(model, { gpu: true });
 			.map((_, i) => transcribe(pcm).then(() => console.log("Done", i))),
 	);
 	await whisper.free();
-	console.log("Freed");
+	console.log("Manually freed");
 })();
 
 async function transcribe(pcm: Float32Array): Promise<void> {

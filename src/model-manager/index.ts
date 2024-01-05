@@ -25,6 +25,8 @@ export const MODELS = {
 	"large-v3": "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-large-v3.bin",
 } as const;
 
+export type ModelName = keyof typeof MODELS | (string & {});
+
 /**
  * Downloads a ggml whisper model from a specified URL or shorthand.
  *
@@ -32,7 +34,7 @@ export const MODELS = {
  * @returns A promise that resolves to the name of the downloaded model.
  * @throws An error if the model URL or shorthand is invalid, or if the model fails to download.
  */
-export async function download(model: keyof typeof MODELS | (string & {})): Promise<string> {
+export async function download(model: ModelName): Promise<string> {
 	let url = "",
 		name = "";
 	if (model in MODELS) {
@@ -72,7 +74,7 @@ export async function download(model: keyof typeof MODELS | (string & {})): Prom
  * Removes a locally downloaded model.
  * @param model - The name of the model to remove.
  */
-export function remove(model: string): void {
+export function remove(model: ModelName): void {
 	if (check(model)) {
 		fs.unlinkSync(path.join(models, model + ext));
 	}
@@ -82,7 +84,7 @@ export function remove(model: string): void {
  * Retrieves a list of model names that are available locally.
  * @returns An array of model names.
  */
-export function list(): string[] {
+export function list(): ModelName[] {
 	const files = fs.readdirSync(models).filter((file) => file.endsWith(ext));
 	return files.map((file) => file.slice(0, -ext.length));
 }
@@ -92,7 +94,7 @@ export function list(): string[] {
  * @param model - The name of the model.
  * @returns True if the model exists, false otherwise.
  */
-export function check(model: string): boolean {
+export function check(model: ModelName): boolean {
 	return fs.existsSync(path.join(models, model + ext));
 }
 
@@ -102,10 +104,12 @@ export function check(model: string): boolean {
  * @returns The resolved path of the model.
  * @throws Error if the model is not found.
  */
-export function resolve(model: string): string {
+export function resolve(model: ModelName): string {
 	if (check(model)) {
 		return path.join(models, model + ext);
 	} else {
 		throw new Error(`Model not found: ${model}`);
 	}
 }
+
+export const dir = { root, models };

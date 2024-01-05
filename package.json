@@ -29,7 +29,8 @@
 		"build": "node-gyp rebuild && tsup",
 		"install": "cd whisper.cpp && make libwhisper.a && cd .. && node-gyp rebuild",
 		"changeset": "changeset",
-		"build:docs": "typedoc --out docs src/index.ts"
+		"build:docs": "typedoc --out docs src/index.ts",
+		"test": "vitest --dir test"
 	},
 	"dependencies": {
 		"node-addon-api": "^7.0.0"
@@ -46,7 +47,8 @@
 		"tsup": "^8.0.1",
 		"tsx": "^4.7.0",
 		"typedoc": "^0.25.6",
-		"typescript": "^5.3.3"
+		"typescript": "^5.3.3",
+		"vitest": "^1.1.3"
 	},
 	"repository": {
 		"type": "git",
