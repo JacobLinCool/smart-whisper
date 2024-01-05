@@ -4,8 +4,10 @@ Whisper.cpp Node.js binding with auto model offloading.
 
 ## Features
 
+- [x] Directly interact with whisper.cpp as Node.js native addon
 - [x] Load model once, run inference multiple times
 - [x] Auto model offloading and reloading
+- [x] Model manager to automatically download and update models
 
 ## Example
 

@@ -2,6 +2,9 @@ import path from "node:path";
 import { TranscribeParams, TranscribeResult } from "./types";
 const module = require(path.join(__dirname, "../build/Release/smart-whisper"));
 
+/**
+ * A external handle to a model.
+ */
 export type Handle = unknown;
 
 export interface Binding {
@@ -35,4 +38,7 @@ export interface Binding {
 	): void;
 }
 
+/**
+ * The native binding for the underlying C++ addon.
+ */
 export const binding: Binding = module;
