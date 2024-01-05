@@ -23,6 +23,7 @@
 		"whisper.cpp/LICENSE"
 	],
 	"scripts": {
+		"prepare": "husky install",
 		"format": "prettier --ignore-path .gitignore --write .",
 		"makelib": "cd whisper.cpp && make libwhisper.a",
 		"build": "node-gyp rebuild && tsup",
@@ -34,6 +35,8 @@
 	"devDependencies": {
 		"@types/node": "^20.10.6",
 		"@types/node-wav": "^0.0.3",
+		"husky": "^8.0.3",
+		"lint-staged": "^15.2.0",
 		"node-wav": "^0.0.2",
 		"prettier": "^3.1.1",
 		"tsup": "^8.0.1",
@@ -43,5 +46,11 @@
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/JacobLinCool/smart-whisper.git"
-	}
+	},
+	"lint-staged": {
+		"*.{ts,js,json,yaml,yml}": [
+			"prettier --write"
+		]
+	},
+	"packageManager": "pnpm@8.10.5"
 }
