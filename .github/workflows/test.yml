@@ -28,6 +28,12 @@ jobs:
               with:
                   node-version: ${{ matrix.node }}
 
+            - uses: Jimver/cuda-toolkit@v0.2.11
+              with:
+                  sub-packages: '["nvcc"]'
+                  method: network
+              if: matrix.os == 'windows-latest'
+
             - name: Setup PNPM
               uses: pnpm/action-setup@v2
               with:
