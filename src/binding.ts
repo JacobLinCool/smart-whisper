@@ -25,14 +25,12 @@ export interface Binding {
 	 * @param handle The handle to the model.
 	 * @param pcm The PCM buffer.
 	 * @param params The parameters to use for transcription.
-	 * @param receive A callback that will be called with the results.
 	 * @param finish A callback that will be called when the transcription is finished.
 	 */
 	transcribe(
 		handle: Handle,
 		pcm: Float32Array,
 		params: Partial<TranscribeParams>,
-		// receive: (result: TranscribeResult) => void,
 		finish: (results: TranscribeResult[]) => void,
 	): void;
 }

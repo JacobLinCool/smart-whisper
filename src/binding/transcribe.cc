@@ -46,14 +46,14 @@ struct whisper_full_params whisper_full_params_from_js(Napi::Object o) {
         params.print_timestamps = o.Get("print_timestamps").As<Napi::Boolean>();
     }
 
-    if (o.Has("initial_prompt")) {
+    if (o.Has("initial_prompt") && o.Get("initial_prompt").IsString()) {
         std::string initial_prompt = o.Get("initial_prompt").As<Napi::String>().Utf8Value();
         params.initial_prompt = strdup(initial_prompt.c_str());
     } else {
         params.initial_prompt = nullptr;
     }
 
-    if (o.Has("language")) {
+    if (o.Has("language") && o.Get("language").IsString()) {
         std::string language = o.Get("language").As<Napi::String>().Utf8Value();
         params.language = strdup(language.c_str());
     } else {
