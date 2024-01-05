@@ -28,7 +28,8 @@
 		"makelib": "cd whisper.cpp && make libwhisper.a",
 		"build": "node-gyp rebuild && tsup",
 		"install": "cd whisper.cpp && make libwhisper.a && cd .. && node-gyp rebuild",
-		"changeset": "changeset"
+		"changeset": "changeset",
+		"build:docs": "typedoc --out docs src/index.ts"
 	},
 	"dependencies": {
 		"node-addon-api": "^7.0.0"
@@ -44,6 +45,7 @@
 		"prettier": "^3.1.1",
 		"tsup": "^8.0.1",
 		"tsx": "^4.7.0",
+		"typedoc": "^0.25.6",
 		"typescript": "^5.3.3"
 	},
 	"repository": {
