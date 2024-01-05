@@ -1,0 +1,41 @@
+name: Release
+
+on:
+    push:
+        branches:
+            - main
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+    release:
+        name: Release
+        runs-on: ubuntu-latest
+        timeout-minutes: 30
+        permissions:
+            contents: write
+            issues: write
+            pull-requests: write
+        steps:
+            - name: Checkout Repo
+              uses: actions/checkout@v4
+
+            - name: Setup PNPM
+              uses: pnpm/action-setup@v2
+              with:
+                  run_install: true
+
+            - name: Build
+              run: pnpm makelib && pnpm build
+
+            - name: Create Release Pull Request or Publish to NPM
+              id: changesets
+              uses: changesets/action@v1
+              with:
+                  publish: pnpm changeset publish
+                  version: pnpm changeset version
+                  title: Release Packages
+                  commit: bump versions
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

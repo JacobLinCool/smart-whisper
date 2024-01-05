@@ -27,12 +27,15 @@
 		"format": "prettier --ignore-path .gitignore --write .",
 		"makelib": "cd whisper.cpp && make libwhisper.a",
 		"build": "node-gyp rebuild && tsup",
-		"install": "cd whisper.cpp && make libwhisper.a && cd .. && node-gyp rebuild"
+		"install": "cd whisper.cpp && make libwhisper.a && cd .. && node-gyp rebuild",
+		"changeset": "changeset"
 	},
 	"dependencies": {
 		"node-addon-api": "^7.0.0"
 	},
 	"devDependencies": {
+		"@changesets/changelog-github": "^0.5.0",
+		"@changesets/cli": "^2.27.1",
 		"@types/node": "^20.10.6",
 		"@types/node-wav": "^0.0.3",
 		"husky": "^8.0.3",
