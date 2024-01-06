@@ -18,7 +18,7 @@
 		"dist",
 		"src",
 		"binding.gyp",
-		"whisper.cpp/*.{c,h,cpp,m,cu}",
+		"whisper.cpp/*.{c,h,cpp,m,cu,metal}",
 		"whisper.cpp/Makefile",
 		"whisper.cpp/LICENSE"
 	],

@@ -1,3 +1,6 @@
+process.env.GGML_METAL_PATH_RESOURCES =
+	process.env.GGML_METAL_PATH_RESOURCES || path.join(__dirname, "../whisper.cpp");
+
 import path from "node:path";
 import { TranscribeParams, TranscribeResult } from "./types";
 const module = require(path.join(__dirname, "../build/Release/smart-whisper"));
