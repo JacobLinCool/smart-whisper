@@ -38,7 +38,7 @@ jobs:
               run: pnpm makelib && pnpm build && pnpm build:docs
 
             - name: Setup Pages
-              uses: actions/configure-pages@v3
+              uses: actions/configure-pages@v4
 
             - name: Upload artifact
               uses: actions/upload-pages-artifact@v3
