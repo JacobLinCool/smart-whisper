@@ -54,6 +54,10 @@
 		"type": "git",
 		"url": "git+https://github.com/JacobLinCool/smart-whisper.git"
 	},
+	"homepage": "https://jacoblincool.github.io/smart-whisper/",
+	"bugs": {
+		"url": "https://github.com/JacobLinCool/smart-whisper/issues"
+	},
 	"lint-staged": {
 		"*.{ts,js,json,yaml,yml}": [
 			"prettier --write"
