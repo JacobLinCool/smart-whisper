@@ -1,5 +1,11 @@
 # smart-whisper
 
+## 0.1.2
+
+### Patch Changes
+
+- [`dbeaf9a`](https://github.com/JacobLinCool/smart-whisper/commit/dbeaf9a377a623614d67515accb6906817bf1143) Thanks [@JacobLinCool](https://github.com/JacobLinCool)! - Includes script files in the package, 0.1.1 unintentionally ignores those scripts
+
 ## 0.1.1
 
 ### Patch Changes
