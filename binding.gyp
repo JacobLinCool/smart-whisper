@@ -10,7 +10,7 @@
           "src/binding/model.cc",
           "src/binding/transcribe.cc",
       ],
-      "libraries": [ "<(module_root_dir)/whisper.cpp/libwhisper.a", "<!@(node dist/linker.js)" ],
+      "libraries": [ "<(module_root_dir)/whisper.cpp/libwhisper.a", "<!@(node scripts/linker.js)" ],
       'include_dirs': ["<!@(node -p \"require('node-addon-api').include\")", "whisper.cpp", "whisper.cpp/examples"],
       'dependencies': ["<!(node -p \"require('node-addon-api').gyp\")"],
       'cflags!': [ '-fno-exceptions' ],
