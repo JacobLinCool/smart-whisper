@@ -17,6 +17,7 @@
 	"files": [
 		"dist",
 		"src",
+		"scripts",
 		"binding.gyp",
 		"whisper.cpp/*.{c,h,cpp,m,cu,metal}",
 		"whisper.cpp/Makefile",
