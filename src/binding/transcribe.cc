@@ -60,6 +60,13 @@ struct whisper_full_params whisper_full_params_from_js(Napi::Object o) {
         params.language = strdup("auto");
     }
 
+    if (o.Has("suppress_blank") && o.Get("suppress_blank").IsBoolean()) {
+        params.suppress_blank = o.Get("suppress_blank").As<Napi::Boolean>();
+    }
+    if (o.Has("suppress_non_speech_tokens") && o.Get("suppress_non_speech_tokens").IsBoolean()) {
+        params.suppress_non_speech_tokens = o.Get("suppress_non_speech_tokens").As<Napi::Boolean>();
+    }
+
     if (o.Has("temperature")) {
         params.temperature = o.Get("temperature").As<Napi::Number>();
     }
@@ -69,6 +76,7 @@ struct whisper_full_params whisper_full_params_from_js(Napi::Object o) {
     if (o.Has("length_penalty")) {
         params.length_penalty = o.Get("length_penalty").As<Napi::Number>();
     }
+
     if (o.Has("temperature_inc")) {
         params.temperature_inc = o.Get("temperature_inc").As<Napi::Number>();
     }
