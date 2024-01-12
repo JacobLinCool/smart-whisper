@@ -1,5 +1,15 @@
 # smart-whisper
 
+## 0.2.0
+
+### Minor Changes
+
+- [`1a42992`](https://github.com/JacobLinCool/smart-whisper/commit/1a42992bca97111619b137a74392970987a9ee09) Thanks [@JacobLinCool](https://github.com/JacobLinCool)! - Support detailed result format with confidence and token details
+
+### Patch Changes
+
+- [`4c12f41`](https://github.com/JacobLinCool/smart-whisper/commit/4c12f419cccb3b0e6ca80d5385b5c64540161241) Thanks [@JacobLinCool](https://github.com/JacobLinCool)! - Add missing suppress_blank and suppress_none_speech_tokens params
+
 ## 0.1.2
 
 ### Patch Changes
