@@ -1,5 +1,9 @@
 #include "transcribe.h"
 
+struct smart_whisper_transcribe_params {
+    const char *format;
+};
+
 struct whisper_full_params whisper_full_params_from_js(Napi::Object o) {
     struct whisper_full_params params =
         whisper_full_default_params(whisper_sampling_strategy::WHISPER_SAMPLING_BEAM_SEARCH);
@@ -94,15 +98,31 @@ struct whisper_full_params whisper_full_params_from_js(Napi::Object o) {
     return params;
 }
 
+struct smart_whisper_transcribe_params smart_whisper_transcribe_params_from_js(Napi::Object o) {
+    struct smart_whisper_transcribe_params params;
+
+    if (o.Has("format") && o.Get("format").IsString()) {
+        std::string format = o.Get("format").As<Napi::String>().Utf8Value();
+        params.format = strdup(format.c_str());
+    } else {
+        params.format = strdup("simple");
+    }
+
+    return params;
+}
+
 class TranscribeWorker : public Napi::AsyncWorker {
    public:
     TranscribeWorker(whisper_context *context, const float *samples, int n_samples,
-                     struct whisper_full_params params, Napi::Function &finish_callback)
+                     struct whisper_full_params             params,
+                     struct smart_whisper_transcribe_params smart_params,
+                     Napi::Function                        &finish_callback)
         : AsyncWorker(finish_callback),
           context(context),
           samples(samples),
           n_samples(n_samples),
-          params(params) {
+          params(params),
+          smart_params(smart_params) {
         // tsfn = Napi::ThreadSafeFunction::New(receive_callback.Env(), receive_callback,
         //                                      "TranscribeWorkerCallback",  // just a name
         //                                      0,                           // unlimited queue
@@ -123,6 +143,9 @@ class TranscribeWorker : public Napi::AsyncWorker {
         if (state != nullptr) {
             whisper_free_state(state);
         }
+
+        free((void *)smart_params.format);
+
         // tsfn.Release();
     }
 
@@ -170,6 +193,41 @@ class TranscribeWorker : public Napi::AsyncWorker {
                                   Env(), whisper_full_get_segment_t1_from_state(state, i) * 10));
             segment.Set("text", Napi::String::New(
                                     Env(), whisper_full_get_segment_text_from_state(state, i)));
+
+            if (strcmp(smart_params.format, "detail") == 0) {
+                float       confidence = 0, min_p = 1, max_p = 0;
+                int         skips = 0;
+                int         tokens = whisper_full_n_tokens_from_state(state, i);
+                Napi::Array tokens_array = Napi::Array::New(Env(), tokens);
+                for (int j = 0; j < tokens; j++) {
+                    auto         token = whisper_full_get_token_data_from_state(state, i, j);
+                    Napi::Object token_object = Napi::Object::New(Env());
+                    token_object.Set(
+                        "text", Napi::String::New(Env(), whisper_full_get_token_text_from_state(
+                                                             context, state, i, j)));
+                    token_object.Set("id", Napi::Number::New(Env(), token.id));
+                    token_object.Set("p", Napi::Number::New(Env(), token.p));
+                    tokens_array.Set(j, token_object);
+
+                    if (token.id > whisper_token_eot(context)) {
+                        skips++;
+                        continue;
+                    }
+                    confidence += token.p;
+                    min_p = std::min(min_p, token.p);
+                    max_p = std::max(max_p, token.p);
+                }
+
+                if (tokens > 2) {
+                    confidence = (confidence - min_p - max_p) / (tokens - 2 - skips);
+                } else {
+                    confidence = confidence / (tokens - skips);
+                }
+
+                segment.Set("confidence", Napi::Number::New(Env(), confidence));
+                segment.Set("tokens", tokens_array);
+            }
+
             segments.Set(i, segment);
         }
 
@@ -177,11 +235,12 @@ class TranscribeWorker : public Napi::AsyncWorker {
     }
 
    private:
-    whisper_context           *context;
-    whisper_state             *state;
-    const float               *samples;
-    int                        n_samples;
-    struct whisper_full_params params;
+    whisper_context                       *context;
+    whisper_state                         *state;
+    const float                           *samples;
+    int                                    n_samples;
+    struct whisper_full_params             params;
+    struct smart_whisper_transcribe_params smart_params;
     // Napi::ThreadSafeFunction   tsfn;
 };
 
@@ -201,13 +260,15 @@ Napi::Value Transcribe(const Napi::CallbackInfo &info) {
 
     int n_samples = static_cast<int>(pcm.ElementLength());
 
-    Napi::Object               params = info[2].As<Napi::Object>();
-    struct whisper_full_params whisper_params = whisper_full_params_from_js(params);
+    Napi::Object                           params = info[2].As<Napi::Object>();
+    struct whisper_full_params             whisper_params = whisper_full_params_from_js(params);
+    struct smart_whisper_transcribe_params smart_params =
+        smart_whisper_transcribe_params_from_js(params);
 
     Napi::Function finish_callback = info[3].As<Napi::Function>();
 
-    TranscribeWorker *worker =
-        new TranscribeWorker(context, samples, n_samples, whisper_params, finish_callback);
+    TranscribeWorker *worker = new TranscribeWorker(context, samples, n_samples, whisper_params,
+                                                    smart_params, finish_callback);
     worker->Queue();
 
     return env.Undefined();

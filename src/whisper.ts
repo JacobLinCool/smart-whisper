@@ -1,4 +1,4 @@
-import type { TranscribeParams, TranscribeResult } from "./types";
+import type { TranscribeFormat, TranscribeParams, TranscribeResult } from "./types";
 import { WhisperModel } from "./model";
 import { TranscribeTask } from "./transcribe";
 
@@ -105,12 +105,12 @@ export class Whisper {
 	 * @param params - Optional parameters for transcription.
 	 * @returns A promise that resolves to the result of the transcription task.
 	 */
-	async transcribe(
+	async transcribe<Format extends TranscribeFormat>(
 		pcm: Float32Array,
-		params: Partial<TranscribeParams> = {},
-	): Promise<{ result: Promise<TranscribeResult[]> }> {
+		params: Partial<TranscribeParams<Format>> = {},
+	): Promise<{ result: Promise<TranscribeResult<Format>[]> }> {
 		const model = await this.model();
-		const task = new TranscribeTask(model);
+		const task = new TranscribeTask<Format>(model);
 		const result = task.run(pcm, params);
 		this._tasks.push(result);
 		return { result };

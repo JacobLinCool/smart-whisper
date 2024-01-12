@@ -1,9 +1,9 @@
 import EventEmitter from "node:events";
 import type { WhisperModel } from "./model";
-import { TranscribeParams, TranscribeResult } from "./types";
+import { TranscribeFormat, TranscribeParams, TranscribeResult } from "./types";
 import { binding } from "./binding";
 
-export class TranscribeTask extends EventEmitter {
+export class TranscribeTask<Format extends TranscribeFormat> extends EventEmitter {
 	private _model: WhisperModel;
 
 	constructor(model: WhisperModel) {
@@ -15,7 +15,10 @@ export class TranscribeTask extends EventEmitter {
 		return this._model;
 	}
 
-	async run(pcm: Float32Array, params: Partial<TranscribeParams>): Promise<TranscribeResult[]> {
+	async run(
+		pcm: Float32Array,
+		params: Partial<TranscribeParams<Format>>,
+	): Promise<TranscribeResult<Format>[]> {
 		if (await this.model.freed) {
 			throw new Error("Model has been freed");
 		}

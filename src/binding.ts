@@ -2,7 +2,7 @@ process.env.GGML_METAL_PATH_RESOURCES =
 	process.env.GGML_METAL_PATH_RESOURCES || path.join(__dirname, "../whisper.cpp");
 
 import path from "node:path";
-import { TranscribeParams, TranscribeResult } from "./types";
+import { TranscribeFormat, TranscribeParams, TranscribeResult } from "./types";
 const module = require(path.join(__dirname, "../build/Release/smart-whisper"));
 
 /**
@@ -33,11 +33,11 @@ export interface Binding {
 	 * @param params The parameters to use for transcription.
 	 * @param finish A callback that will be called when the transcription is finished.
 	 */
-	transcribe(
+	transcribe<Format extends TranscribeFormat>(
 		handle: Handle,
 		pcm: Float32Array,
-		params: Partial<TranscribeParams>,
-		finish: (results: TranscribeResult[]) => void,
+		params: Partial<TranscribeParams<Format>>,
+		finish: (results: TranscribeResult<Format>[]) => void,
 	): void;
 }
 
