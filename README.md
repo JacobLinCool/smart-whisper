@@ -34,8 +34,8 @@ const wav = process.argv[3];
 const whisper = new Whisper(model, { gpu: true });
 const pcm = read_wav(wav);
 
-const { result } = await whisper.transcribe(pcm, { language: "auto" });
-console.log(await result);
+const task = await whisper.transcribe(pcm, { language: "auto" });
+console.log(await task.result);
 
 await whisper.free();
 console.log("Maunally freed");
@@ -52,6 +52,16 @@ function read_wav(file: string): Float32Array {
 
     return channelData[0];
 }
+```
+
+The transcribe method returns a task object that can be used to retrieve the result of the transcription, which also emits events for the progress of the transcription.
+
+```ts
+const task = await whisper.transcribe(pcm, { language: "auto" });
+task.on("transcribed", (result) => {
+    console.log("Transcribed", result);
+});
+console.log(await task.result);
 ```
 
 ## Links

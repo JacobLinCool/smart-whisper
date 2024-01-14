@@ -108,12 +108,11 @@ export class Whisper {
 	async transcribe<Format extends TranscribeFormat>(
 		pcm: Float32Array,
 		params: Partial<TranscribeParams<Format>> = {},
-	): Promise<{ result: Promise<TranscribeResult<Format>[]> }> {
+	): Promise<TranscribeTask<Format>> {
 		const model = await this.model();
-		const task = new TranscribeTask<Format>(model);
-		const result = task.run(pcm, params);
-		this._tasks.push(result);
-		return { result };
+		const task = await TranscribeTask.run<Format>(model, pcm, params);
+		this._tasks.push(task.result);
+		return task;
 	}
 
 	async free(): Promise<void> {

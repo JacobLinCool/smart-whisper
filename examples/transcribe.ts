@@ -15,8 +15,11 @@ const whisper = new Whisper(model, { gpu: true });
 })();
 
 async function transcribe(pcm: Float32Array): Promise<void> {
-	const { result } = await whisper.transcribe(pcm, options);
-	console.log(JSON.stringify(await result, null, 2));
+	const task = await whisper.transcribe(pcm, options);
+	task.on("transcribed", (result) => {
+		console.log("transcribed", JSON.stringify(result, null, 2));
+	});
+	console.log(JSON.stringify(await task.result, null, 2));
 }
 
 function read_wav(file: string): Float32Array {

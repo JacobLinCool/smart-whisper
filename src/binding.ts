@@ -32,12 +32,14 @@ export interface Binding {
 	 * @param pcm The PCM buffer.
 	 * @param params The parameters to use for transcription.
 	 * @param finish A callback that will be called when the transcription is finished.
+	 * @param progress A callback that will be called when a new result is available.
 	 */
 	transcribe<Format extends TranscribeFormat>(
 		handle: Handle,
 		pcm: Float32Array,
 		params: Partial<TranscribeParams<Format>>,
 		finish: (results: TranscribeResult<Format>[]) => void,
+		progress: (result: TranscribeResult<Format>) => void,
 	): void;
 }
 
