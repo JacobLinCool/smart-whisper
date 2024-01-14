@@ -1,5 +1,15 @@
 # smart-whisper
 
+## 0.3.0
+
+### Minor Changes
+
+- [`44009f5`](https://github.com/JacobLinCool/smart-whisper/commit/44009f509ea2fed5cacbf8585c16c0fad49e9f82) Thanks [@JacobLinCool](https://github.com/JacobLinCool)! - Support "transcribed" event of TranscribeTask, which being emitted when partial transcription is available
+
+### Patch Changes
+
+- [`0b9c07b`](https://github.com/JacobLinCool/smart-whisper/commit/0b9c07b98a395a2a0ddb5e83bd81659500474b1d) Thanks [@JacobLinCool](https://github.com/JacobLinCool)! - Update upstream commit to 6ebba52
+
 ## 0.2.0
 
 ### Minor Changes
