@@ -11,8 +11,26 @@ Smart-Whisper is a native Node.js addon designed for efficient and streamlined i
 
 ## Installation
 
+The standard installation supports Windows, macOS, and Linux out of the box. And it also automatically enables the GPU and CPU acceleration on macOS.
+
 ```sh
 npm i smart-whisper
+```
+
+### Acceleration
+
+Due to the complexity of the different acceleration methods for different devices. You need to compile the `libwhisper.a` or `libwhisper.so` from [whisper.cpp](https://github.com/ggerganov/whisper.cpp) yourself.
+
+And then set the `BYOL` (Bring Your Own Library) environment variable to the path of the compiled library.
+
+```sh
+BYOL='/path/to/libwhisper.a' npm i smart-whisper
+```
+
+You may need to link other libraries like:
+
+```sh
+BYOL='/path/to/libwhisper.a -lopenblas' npm i smart-whisper
 ```
 
 ## Documentation
