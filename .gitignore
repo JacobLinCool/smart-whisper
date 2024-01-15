@@ -89,7 +89,7 @@ out
 
 # Nuxt.js build / generate output
 .nuxt
-dist
+
 
 # Gatsby files
 .cache/
@@ -129,3 +129,6 @@ dist
 /whsiper.cpp
 /build
 /docs
+dist/*.js
+dist/*.ts
+!/dist/build.js
