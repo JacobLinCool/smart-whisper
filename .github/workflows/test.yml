@@ -14,7 +14,7 @@ jobs:
         runs-on: ${{ matrix.os }}
         strategy:
             matrix:
-                os: [ubuntu-latest, macos-latest] # windows-latest has a bug with makefile (cc command not found)
+                os: [ubuntu-latest, macos-latest, windows-latest]
                 node: [18, 20]
 
         steps:
@@ -35,9 +35,6 @@ jobs:
               uses: pnpm/action-setup@v2
               with:
                   run_install: true
-
-            - name: Build All
-              run: pnpm makelib && pnpm build
 
             - name: Test
               run: pnpm test
