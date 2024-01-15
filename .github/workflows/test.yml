@@ -14,7 +14,7 @@ jobs:
         runs-on: ${{ matrix.os }}
         strategy:
             matrix:
-                os: [ubuntu-latest, macos-latest] # windows-latest has a bug with makefile (cc command not found)
+                os: [ubuntu-latest, macos-latest, windows-latest]
                 node: [18, 20]
 
         steps:
@@ -31,23 +31,10 @@ jobs:
             - name: Install distutils
               run: python -m pip install setuptools
 
-            - uses: Jimver/cuda-toolkit@v0.2.11
-              with:
-                  sub-packages: '["nvcc"]'
-                  method: network
-              if: matrix.os == 'windows-latest'
-
-            - name: Add msys64 to PATH
-              run: echo "/c/msys64/mingw64/bin:/c/msys64/usr/bin" >> $GITHUB_PATH
-              if: matrix.os == 'windows-latest'
-
             - name: Setup PNPM
               uses: pnpm/action-setup@v2
               with:
                   run_install: true
-
-            - name: Build All
-              run: pnpm makelib && pnpm build
 
             - name: Test
               run: pnpm test

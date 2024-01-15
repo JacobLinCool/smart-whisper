@@ -26,9 +26,8 @@
 	"scripts": {
 		"prepare": "husky install",
 		"format": "prettier --ignore-path .gitignore --write .",
-		"makelib": "cd whisper.cpp && make libwhisper.a",
 		"build": "tsup && node-gyp rebuild",
-		"install": "cd whisper.cpp && make libwhisper.a && cd .. && node-gyp rebuild",
+		"install": "node-gyp rebuild",
 		"changeset": "changeset",
 		"build:docs": "typedoc --out docs src/index.ts",
 		"test": "vitest --dir test"
