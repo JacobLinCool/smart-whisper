@@ -1,5 +1,13 @@
 # smart-whisper
 
+## 0.4.0
+
+### Minor Changes
+
+- [#14](https://github.com/JacobLinCool/smart-whisper/pull/14) [`9a21aaa`](https://github.com/JacobLinCool/smart-whisper/commit/9a21aaaed73be86a558c6ffa3f9ac15bbc08c26a) Thanks [@JacobLinCool](https://github.com/JacobLinCool)! - Support BYOL (Bring your own library) for complex libwhisper.a / libwhisper.so usage
+
+- [#14](https://github.com/JacobLinCool/smart-whisper/pull/14) [`9a21aaa`](https://github.com/JacobLinCool/smart-whisper/commit/9a21aaaed73be86a558c6ffa3f9ac15bbc08c26a) Thanks [@JacobLinCool](https://github.com/JacobLinCool)! - Move all build process into gyp
+
 ## 0.3.0
 
 ### Minor Changes
