@@ -35,7 +35,7 @@ jobs:
                   run_install: true
 
             - name: Build Docs
-              run: pnpm makelib && pnpm build && pnpm build:docs
+              run: pnpm build && pnpm build:docs
 
             - name: Setup Pages
               uses: actions/configure-pages@v3

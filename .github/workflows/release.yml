@@ -28,7 +28,7 @@ jobs:
                   run_install: true
 
             - name: Build
-              run: pnpm makelib && pnpm build
+              run: pnpm build
 
             - name: Create Release Pull Request or Publish to NPM
               id: changesets
