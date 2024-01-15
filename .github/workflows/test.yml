@@ -31,7 +31,7 @@ jobs:
             - name: Install distutils
               run: python -m pip install setuptools
 
-            - uses: Jimver/cuda-toolkit@v0.2.11
+            - uses: Jimver/cuda-toolkit@v0.2.14
               with:
                   sub-packages: '["nvcc"]'
                   method: network
