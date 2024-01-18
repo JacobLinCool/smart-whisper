@@ -253,9 +253,9 @@ class TranscribeWorker : public Napi::AsyncProgressQueueWorker<int> {
                     max_p = std::max(max_p, token.p);
                 }
 
-                if (tokens > 2) {
-                    confidence = (confidence - min_p - max_p) / (tokens - 2 - skips);
-                } else {
+                if (tokens - skips > 2) {
+                    confidence = (confidence - min_p - max_p) / (tokens - skips - 2);
+                } else if (tokens - skips > 0) {
                     confidence = confidence / (tokens - skips);
                 }
 
