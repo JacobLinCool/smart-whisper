@@ -1,5 +1,11 @@
 # smart-whisper
 
+## 0.4.1
+
+### Patch Changes
+
+- [`f5f0ead`](https://github.com/JacobLinCool/smart-whisper/commit/f5f0ead97dff0bd8603138938c1dafafba6d8591) Thanks [@JacobLinCool](https://github.com/JacobLinCool)! - Fix confidence algorithm
+
 ## 0.4.0
 
 ### Minor Changes
