@@ -126,3 +126,12 @@ export class Whisper {
 		await model.free();
 	}
 }
+
+/**
+ * Here's a life cycle diagram of a model:
+ * | Method     | (0) Not Available | (1) Loading | (2) Available | (3) Freeing | (0) Not Available |
+ * |------------|-------------------|-------------|---------------|-------------|-------------------|
+ * | load       | V                 | -           | -             | -           | V                 |
+ * | free       | -                 | -           | wait tasks, V | -           | -                 |
+ * | transcribe | load              | load        | V             | load        | load              |
+ */
