@@ -1,5 +1,11 @@
 # smart-whisper
 
+## 0.4.3
+
+### Patch Changes
+
+- [`917193c`](https://github.com/JacobLinCool/smart-whisper/commit/917193c2e8d823b5cd98280a8aa760f567cf76cc) Thanks [@JacobLinCool](https://github.com/JacobLinCool)! - Add openblas auto-detection in build script
+
 ## 0.4.2
 
 ### Patch Changes
