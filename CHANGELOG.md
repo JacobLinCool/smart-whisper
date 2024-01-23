@@ -1,5 +1,11 @@
 # smart-whisper
 
+## 0.4.2
+
+### Patch Changes
+
+- [`953b397`](https://github.com/JacobLinCool/smart-whisper/commit/953b3979a5fd413244c6afd6f912d0686008618f) Thanks [@JacobLinCool](https://github.com/JacobLinCool)! - Update upstream to 1cf679d
+
 ## 0.4.1
 
 ### Patch Changes
