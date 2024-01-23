@@ -43,6 +43,7 @@ __export(build_exports, {
 });
 module.exports = __toCommonJS(build_exports);
 var import_node_os = __toESM(require("os"));
+var import_node_child_process = require("child_process");
 var cfg = config();
 var sources = cfg.sources.join(" ");
 var defines = cfg.defines.join(" ");
@@ -108,12 +109,23 @@ function config() {
 }
 function infer_backend() {
 	let backend = "cpu";
-	if (import_node_os.default.platform() === "darwin") {
-		backend = "accelerate";
-		if (import_node_os.default.arch() === "arm64") {
-			backend = "metal";
+	try {
+		if (import_node_os.default.platform() === "darwin") {
+			backend = "accelerate";
+			if (import_node_os.default.arch() === "arm64") {
+				backend = "metal";
+			}
+		} else if (import_node_os.default.platform() === "linux") {
+			const has_libopenblas = !!(0, import_node_child_process.execSync)(
+				"ldconfig -p | grep libopenblas",
+			)
+				.toString()
+				.trim();
+			if (has_libopenblas) {
+				backend = "openblas";
+			}
 		}
-	}
+	} catch (e) {}
 	return backend;
 }
 // Annotate the CommonJS export names for ESM import in node:

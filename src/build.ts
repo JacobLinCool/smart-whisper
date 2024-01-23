@@ -1,4 +1,5 @@
 import os from "node:os";
+import { execSync } from "node:child_process";
 
 type ComputeBackend = "cpu" | "accelerate" | "metal" | "clblast" | "openblas";
 
@@ -84,11 +85,21 @@ function config(): {
 
 function infer_backend(): ComputeBackend {
 	let backend: ComputeBackend = "cpu";
-	if (os.platform() === "darwin") {
-		backend = "accelerate";
-		if (os.arch() === "arm64") {
-			backend = "metal";
+
+	try {
+		if (os.platform() === "darwin") {
+			backend = "accelerate";
+			if (os.arch() === "arm64") {
+				backend = "metal";
+			}
+		} else if (os.platform() === "linux") {
+			const has_libopenblas = !!execSync("ldconfig -p | grep libopenblas").toString().trim();
+			if (has_libopenblas) {
+				backend = "openblas";
+			}
 		}
+	} catch {
+		// if anything goes wrong, just use the default cpu backend
 	}
 
 	return backend;
