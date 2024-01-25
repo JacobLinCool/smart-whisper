@@ -40,7 +40,7 @@
 		"@changesets/cli": "^2.27.1",
 		"@types/node": "^20.10.6",
 		"@types/node-wav": "^0.0.3",
-		"husky": "^8.0.3",
+		"husky": "^9.0.0",
 		"lint-staged": "^15.2.0",
 		"node-wav": "^0.0.2",
 		"prettier": "^3.1.1",
