@@ -27,6 +27,18 @@ class LoadModelWorker : public Napi::AsyncWorker {
     whisper_context              *context;
 };
 
+bool IsProduction(const Napi::Object global_env) {
+    Napi::Object process = global_env.Get("process").As<Napi::Object>();
+    Napi::Object env = process.Get("env").As<Napi::Object>();
+    Napi::Value  nodeEnv = env.Get("NODE_ENV");
+    if (nodeEnv.IsString()) {
+        Napi::String nodeEnvStr = nodeEnv.As<Napi::String>();
+        std::string  envStr = nodeEnvStr.Utf8Value();
+        return envStr == "production";
+    }
+    return false;
+}
+
 Napi::Value LoadModel(const Napi::CallbackInfo &info) {
     Napi::Env env = info.Env();
 
@@ -41,6 +53,10 @@ Napi::Value LoadModel(const Napi::CallbackInfo &info) {
     params.use_gpu = info[1].As<Napi::Boolean>();
 
     Napi::Function callback = info[2].As<Napi::Function>();
+
+    if (IsProduction(env.Global())) {
+        whisper_log_set([](ggml_log_level level, const char *text, void *user_data) {}, nullptr);
+    }
 
     LoadModelWorker *worker = new LoadModelWorker(callback, model_path, params);
     worker->Queue();
