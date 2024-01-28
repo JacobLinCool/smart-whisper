@@ -17,6 +17,17 @@ The standard installation supports Windows, macOS, and Linux out of the box. And
 npm i smart-whisper
 ```
 
+Support Matrix:
+
+| OS and Arch         | CPU              | GPU       |
+| ------------------- | ---------------- | --------- |
+| macOS Apple Silicon | ✅ (Acceleration) | ✅ (Metal) |
+| macOS Intel         | ✅ (Acceleration) | BYOL      |
+| Linux / Windows     | ✅                | BYOL      |
+
+> - ✅: Out of the box support with standard installation.
+> - BYOL: Bring Your Own Library, see [Acceleration](#acceleration) for more information.
+
 ### Acceleration
 
 Due to the complexity of the different acceleration methods for different devices. You need to compile the `libwhisper.a` or `libwhisper.so` from [whisper.cpp](https://github.com/ggerganov/whisper.cpp) yourself.
@@ -32,6 +43,20 @@ You may need to link other libraries like:
 ```sh
 BYOL='/path/to/libwhisper.a -lopenblas' npm i smart-whisper
 ```
+
+#### OpenBLAS
+
+For Linux and Windows without GPU, the best acceleration method might be using OpenBLAS. After installing OpenBLAS, you can compile the `libwhisper.a` with the following command:
+
+```sh
+git clone https://github.com/ggerganov/whisper.cpp
+cd whisper.cpp
+WHISPER_OPENBLAS=1 make -j
+```
+
+#### CUDA and other acceleration methods
+
+Check out the [whisper.cpp](https://github.com/ggerganov/whisper.cpp#nvidia-gpu-support) repository for more information.
 
 ## Documentation
 
