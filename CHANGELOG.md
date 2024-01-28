@@ -1,5 +1,11 @@
 # smart-whisper
 
+## 0.5.0
+
+### Minor Changes
+
+- [#21](https://github.com/JacobLinCool/smart-whisper/pull/21) [`ebb91e7`](https://github.com/JacobLinCool/smart-whisper/commit/ebb91e76eaed44ed6bc1b9e57d222ad12c9da282) Thanks [@silvioprog](https://github.com/silvioprog)! - Allow to disable debug info in production
+
 ## 0.4.3
 
 ### Patch Changes
