@@ -1,5 +1,17 @@
 # smart-whisper
 
+## 0.6.0
+
+### Minor Changes
+
+- [#24](https://github.com/JacobLinCool/smart-whisper/pull/24) [`e26508e`](https://github.com/JacobLinCool/smart-whisper/commit/e26508e69ef625ea79efd18feab52bddbe11a60f) Thanks [@JacobLinCool](https://github.com/JacobLinCool)! - WhisperModel will now be automatically freed by the Node.js garbage collector if `.free()` has not been called previously.
+
+### Patch Changes
+
+- [#26](https://github.com/JacobLinCool/smart-whisper/pull/26) [`c03648c`](https://github.com/JacobLinCool/smart-whisper/commit/c03648c1ad853815bded3c5bf6d7d4821109df53) Thanks [@JacobLinCool](https://github.com/JacobLinCool)! - Support all whisper.cpp transcribe params
+
+- [#26](https://github.com/JacobLinCool/smart-whisper/pull/26) [`c03648c`](https://github.com/JacobLinCool/smart-whisper/commit/c03648c1ad853815bded3c5bf6d7d4821109df53) Thanks [@JacobLinCool](https://github.com/JacobLinCool)! - Show token timestamps if available
+
 ## 0.5.0
 
 ### Minor Changes
