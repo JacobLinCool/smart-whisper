@@ -3,9 +3,12 @@ import type { WhisperModel } from "./model";
 import { TranscribeFormat, TranscribeParams, TranscribeResult } from "./types";
 import { binding } from "./binding";
 
-export class TranscribeTask<Format extends TranscribeFormat> extends EventEmitter {
+export class TranscribeTask<
+	Format extends TranscribeFormat,
+	TokenTimestamp extends boolean,
+> extends EventEmitter {
 	private _model: WhisperModel;
-	private _result: Promise<TranscribeResult<Format>[]> | null = null;
+	private _result: Promise<TranscribeResult<Format, TokenTimestamp>[]> | null = null;
 
 	/**
 	 * You should not construct this class directly, use {@link TranscribeTask.run} instead.
@@ -22,7 +25,7 @@ export class TranscribeTask<Format extends TranscribeFormat> extends EventEmitte
 	/**
 	 * A promise that resolves to the result of the transcription task.
 	 */
-	get result(): Promise<TranscribeResult<Format>[]> {
+	get result(): Promise<TranscribeResult<Format, TokenTimestamp>[]> {
 		if (this._result === null) {
 			throw new Error("Task has not been started");
 		}
@@ -31,8 +34,8 @@ export class TranscribeTask<Format extends TranscribeFormat> extends EventEmitte
 
 	private async _run(
 		pcm: Float32Array,
-		params: Partial<TranscribeParams<Format>>,
-	): Promise<TranscribeResult<Format>[]> {
+		params: Partial<TranscribeParams<Format, TokenTimestamp>>,
+	): Promise<TranscribeResult<Format, TokenTimestamp>[]> {
 		return new Promise((resolve) => {
 			const handle = this.model.handle;
 			if (!handle) {
@@ -54,12 +57,12 @@ export class TranscribeTask<Format extends TranscribeFormat> extends EventEmitte
 		});
 	}
 
-	static async run<Format extends TranscribeFormat>(
+	static async run<Format extends TranscribeFormat, TokenTimestamp extends boolean>(
 		model: WhisperModel,
 		pcm: Float32Array,
-		params: Partial<TranscribeParams<Format>>,
-	): Promise<TranscribeTask<Format>> {
-		if (await model.freed) {
+		params: Partial<TranscribeParams<Format, TokenTimestamp>>,
+	): Promise<TranscribeTask<Format, TokenTimestamp>> {
+		if (model.freed) {
 			throw new Error("Model has been freed");
 		}
 
@@ -69,20 +72,38 @@ export class TranscribeTask<Format extends TranscribeFormat> extends EventEmitte
 		return task;
 	}
 
-	on(event: "finish", listener: (results: TranscribeResult<Format>[]) => void): this;
-	on(event: "transcribed", listener: (result: TranscribeResult<Format>) => void): this;
+	on(
+		event: "finish",
+		listener: (results: TranscribeResult<Format, TokenTimestamp>[]) => void,
+	): this;
+	on(
+		event: "transcribed",
+		listener: (result: TranscribeResult<Format, TokenTimestamp>) => void,
+	): this;
 	on(event: string, listener: (...args: any[]) => void): this {
 		return super.on(event, listener);
 	}
 
-	once(event: "finish", listener: (results: TranscribeResult<Format>[]) => void): this;
-	once(event: "transcribed", listener: (result: TranscribeResult<Format>) => void): this;
+	once(
+		event: "finish",
+		listener: (results: TranscribeResult<Format, TokenTimestamp>[]) => void,
+	): this;
+	once(
+		event: "transcribed",
+		listener: (result: TranscribeResult<Format, TokenTimestamp>) => void,
+	): this;
 	once(event: string, listener: (...args: any[]) => void): this {
 		return super.once(event, listener);
 	}
 
-	off(event: "finish", listener: (results: TranscribeResult<Format>[]) => void): this;
-	off(event: "transcribed", listener: (result: TranscribeResult<Format>) => void): this;
+	off(
+		event: "finish",
+		listener: (results: TranscribeResult<Format, TokenTimestamp>[]) => void,
+	): this;
+	off(
+		event: "transcribed",
+		listener: (result: TranscribeResult<Format, TokenTimestamp>) => void,
+	): this;
 	off(event: string, listener: (...args: any[]) => void): this {
 		return super.off(event, listener);
 	}

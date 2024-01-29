@@ -40,12 +40,15 @@ export namespace Binding {
 	 * @param finish A callback that will be called when the transcription is finished.
 	 * @param progress A callback that will be called when a new result is available.
 	 */
-	export declare function transcribe<Format extends TranscribeFormat>(
+	export declare function transcribe<
+		Format extends TranscribeFormat,
+		TokenTimestamp extends boolean,
+	>(
 		handle: Handle,
 		pcm: Float32Array,
-		params: Partial<TranscribeParams<Format>>,
-		finish: (results: TranscribeResult<Format>[]) => void,
-		progress: (result: TranscribeResult<Format>) => void,
+		params: Partial<TranscribeParams<Format, TokenTimestamp>>,
+		finish: (results: TranscribeResult<Format, TokenTimestamp>[]) => void,
+		progress: (result: TranscribeResult<Format, TokenTimestamp>) => void,
 	): void;
 
 	export declare class WhisperModel {

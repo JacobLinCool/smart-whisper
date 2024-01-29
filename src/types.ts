@@ -8,7 +8,10 @@ export type TranscribeFormat = "simple" | "detail";
 /**
  * See {@link https://github.com/ggerganov/whisper.cpp/blob/00b7a4be02ca82d53ac69dd2dd438c16e2af7658/whisper.h#L433C19-L433C19} for details.
  */
-export interface TranscribeParams<Format extends TranscribeFormat = TranscribeFormat> {
+export interface TranscribeParams<
+	Format extends TranscribeFormat = TranscribeFormat,
+	TokenTimestamp extends boolean = false,
+> {
 	strategy: WhisperSamplingStrategy;
 	n_threads: number;
 	n_max_text_ctx: number;
@@ -23,6 +26,19 @@ export interface TranscribeParams<Format extends TranscribeFormat = TranscribeFo
 	print_progress: boolean;
 	print_realtime: boolean;
 	print_timestamps: boolean;
+
+	token_timestamps: TokenTimestamp;
+	thold_pt: number;
+	thold_ptsum: number;
+	max_len: number;
+	split_on_word: boolean;
+	max_tokens: number;
+
+	speed_up: boolean;
+	debug_mode: boolean;
+	audio_ctx: number;
+
+	tdrz_enable: boolean;
 
 	initial_prompt: string;
 
@@ -41,6 +57,9 @@ export interface TranscribeParams<Format extends TranscribeFormat = TranscribeFo
 	temperature_inc: number;
 	entropy_thold: number;
 	logprob_thold: number;
+	no_speech_thold: number;
+
+	best_of: number;
 
 	beam_size: number;
 
@@ -56,7 +75,8 @@ export interface TranscribeSimpleResult {
 /**
  * Represents a detailed result of transcription.
  */
-export interface TranscribeDetailedResult extends TranscribeSimpleResult {
+export interface TranscribeDetailedResult<TokenTimestamp extends boolean>
+	extends TranscribeSimpleResult {
 	/** The confidence level of the transcription, calculated by the average probability of the tokens. */
 	confidence: number;
 	/** The tokens generated during the transcription process. */
@@ -67,8 +87,14 @@ export interface TranscribeDetailedResult extends TranscribeSimpleResult {
 		id: number;
 		/** The probability of the token. */
 		p: number;
+		/** The start timestamp of the token, in milliseconds. Only available when `token_timestamps` of {@link TranscribeParams} is `true`. */
+		from: TokenTimestamp extends true ? number : undefined;
+		/** The end timestamp of the token, in milliseconds. Only available when `token_timestamps` of {@link TranscribeParams} is `true`. */
+		to: TokenTimestamp extends true ? number : undefined;
 	}[];
 }
 
-export type TranscribeResult<Format extends TranscribeFormat = TranscribeFormat> =
-	Format extends "simple" ? TranscribeSimpleResult : TranscribeDetailedResult;
+export type TranscribeResult<
+	Format extends TranscribeFormat = TranscribeFormat,
+	TokenTimestamp extends boolean = boolean,
+> = Format extends "simple" ? TranscribeSimpleResult : TranscribeDetailedResult<TokenTimestamp>;

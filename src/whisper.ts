@@ -105,12 +105,12 @@ export class Whisper {
 	 * @param params - Optional parameters for transcription.
 	 * @returns A promise that resolves to the result of the transcription task.
 	 */
-	async transcribe<Format extends TranscribeFormat>(
+	async transcribe<Format extends TranscribeFormat, TokenTimestamp extends boolean>(
 		pcm: Float32Array,
-		params: Partial<TranscribeParams<Format>> = {},
-	): Promise<TranscribeTask<Format>> {
+		params: Partial<TranscribeParams<Format, TokenTimestamp>> = {},
+	): Promise<TranscribeTask<Format, TokenTimestamp>> {
 		const model = await this.model();
-		const task = await TranscribeTask.run<Format>(model, pcm, params);
+		const task = await TranscribeTask.run<Format, TokenTimestamp>(model, pcm, params);
 		this._tasks.push(task.result);
 		return task;
 	}
