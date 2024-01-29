@@ -1,6 +1,6 @@
 {
 	"name": "smart-whisper",
-	"version": "0.6.0",
+	"version": "0.6.1",
 	"description": "Whisper.cpp Node.js binding with auto model offloading strategy.",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",

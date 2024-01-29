@@ -1,5 +1,11 @@
 # smart-whisper
 
+## 0.6.1
+
+### Patch Changes
+
+- [`9427207`](https://github.com/JacobLinCool/smart-whisper/commit/9427207a4714fc922832387280ea4f6e3338963e) Thanks [@JacobLinCool](https://github.com/JacobLinCool)! - Add missing types in v0.6.0
+
 ## 0.6.0
 
 ### Minor Changes
