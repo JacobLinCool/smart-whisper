@@ -282,6 +282,11 @@ class TranscribeWorker : public Napi::AsyncProgressQueueWorker<int> {
                                                              context, state, i, j)));
                     token_object.Set("id", Napi::Number::New(Env(), token.id));
                     token_object.Set("p", Napi::Number::New(Env(), token.p));
+                    if (params.token_timestamps) {
+                        token_object.Set("from", Napi::Number::New(Env(), token.t0 * 10));
+                        token_object.Set("to", Napi::Number::New(Env(), token.t1 * 10));
+                    }
+
                     tokens_array.Set(j, token_object);
 
                     if (token.id > whisper_token_eot(context)) {
@@ -335,17 +340,15 @@ Napi::Value Transcribe(const Napi::CallbackInfo& info) {
 
     int n_samples = static_cast<int>(pcm.ElementLength());
 
-    Napi::Object                           params = info[2].As<Napi::Object>();
-    struct whisper_full_params             whisper_params = whisper_full_params_from_js(params);
-    struct smart_whisper_transcribe_params smart_params =
-        smart_whisper_transcribe_params_from_js(params);
+    Napi::Object params = info[2].As<Napi::Object>();
+    auto         whisper_params = whisper_full_params_from_js(params);
+    auto         smart_params = smart_whisper_transcribe_params_from_js(params);
 
     Napi::Function finish_callback = info[3].As<Napi::Function>();
     Napi::Function progress_callback = info[4].As<Napi::Function>();
 
-    TranscribeWorker* worker =
-        new TranscribeWorker(context, samples, n_samples, whisper_params, smart_params,
-                             finish_callback, progress_callback);
+    auto worker = new TranscribeWorker(context, samples, n_samples, whisper_params, smart_params,
+                                       finish_callback, progress_callback);
     worker->Queue();
 
     return env.Undefined();
