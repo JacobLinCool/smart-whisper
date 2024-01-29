@@ -50,6 +50,39 @@ struct whisper_full_params whisper_full_params_from_js(Napi::Object o) {
         params.print_timestamps = o.Get("print_timestamps").As<Napi::Boolean>();
     }
 
+    if (o.Has("token_timestamps")) {
+        params.token_timestamps = o.Get("token_timestamps").As<Napi::Boolean>();
+    }
+    if (o.Has("thold_pt")) {
+        params.thold_pt = o.Get("thold_pt").As<Napi::Number>();
+    }
+    if (o.Has("thold_ptsum")) {
+        params.thold_ptsum = o.Get("thold_ptsum").As<Napi::Number>();
+    }
+    if (o.Has("max_len")) {
+        params.max_len = o.Get("max_len").As<Napi::Number>();
+    }
+    if (o.Has("split_on_word")) {
+        params.split_on_word = o.Get("split_on_word").As<Napi::Boolean>();
+    }
+    if (o.Has("max_tokens")) {
+        params.max_tokens = o.Get("max_tokens").As<Napi::Number>();
+    }
+
+    if (o.Has("speed_up")) {
+        params.speed_up = o.Get("speed_up").As<Napi::Boolean>();
+    }
+    if (o.Has("debug_mode")) {
+        params.debug_mode = o.Get("debug_mode").As<Napi::Boolean>();
+    }
+    if (o.Has("audio_ctx")) {
+        params.audio_ctx = o.Get("audio_ctx").As<Napi::Number>();
+    }
+
+    if (o.Has("tdrz_enable")) {
+        params.tdrz_enable = o.Get("tdrz_enable").As<Napi::Boolean>();
+    }
+
     if (o.Has("initial_prompt") && o.Get("initial_prompt").IsString()) {
         std::string initial_prompt = o.Get("initial_prompt").As<Napi::String>().Utf8Value();
         params.initial_prompt = strdup(initial_prompt.c_str());
@@ -89,6 +122,13 @@ struct whisper_full_params whisper_full_params_from_js(Napi::Object o) {
     }
     if (o.Has("logprob_thold")) {
         params.logprob_thold = o.Get("logprob_thold").As<Napi::Number>();
+    }
+    if (o.Has("no_speech_thold")) {
+        params.no_speech_thold = o.Get("no_speech_thold").As<Napi::Number>();
+    }
+
+    if (o.Has("best_of")) {
+        params.greedy.best_of = o.Get("best_of").As<Napi::Number>();
     }
 
     if (o.Has("beam_size")) {
@@ -242,6 +282,11 @@ class TranscribeWorker : public Napi::AsyncProgressQueueWorker<int> {
                                                              context, state, i, j)));
                     token_object.Set("id", Napi::Number::New(Env(), token.id));
                     token_object.Set("p", Napi::Number::New(Env(), token.p));
+                    if (params.token_timestamps) {
+                        token_object.Set("from", Napi::Number::New(Env(), token.t0 * 10));
+                        token_object.Set("to", Napi::Number::New(Env(), token.t1 * 10));
+                    }
+
                     tokens_array.Set(j, token_object);
 
                     if (token.id > whisper_token_eot(context)) {
@@ -295,17 +340,15 @@ Napi::Value Transcribe(const Napi::CallbackInfo& info) {
 
     int n_samples = static_cast<int>(pcm.ElementLength());
 
-    Napi::Object                           params = info[2].As<Napi::Object>();
-    struct whisper_full_params             whisper_params = whisper_full_params_from_js(params);
-    struct smart_whisper_transcribe_params smart_params =
-        smart_whisper_transcribe_params_from_js(params);
+    Napi::Object params = info[2].As<Napi::Object>();
+    auto         whisper_params = whisper_full_params_from_js(params);
+    auto         smart_params = smart_whisper_transcribe_params_from_js(params);
 
     Napi::Function finish_callback = info[3].As<Napi::Function>();
     Napi::Function progress_callback = info[4].As<Napi::Function>();
 
-    TranscribeWorker* worker =
-        new TranscribeWorker(context, samples, n_samples, whisper_params, smart_params,
-                             finish_callback, progress_callback);
+    auto worker = new TranscribeWorker(context, samples, n_samples, whisper_params, smart_params,
+                                       finish_callback, progress_callback);
     worker->Queue();
 
     return env.Undefined();
