@@ -8,23 +8,29 @@ const module = require(path.join(__dirname, "../build/Release/smart-whisper"));
 /**
  * A external handle to a model.
  */
-export type Handle = unknown;
+export type Handle = {
+	readonly "": unique symbol;
+};
 
-export interface Binding {
+export namespace Binding {
 	/**
 	 * Load a model from a whisper weights file.
 	 * @param file The path to the whisper weights file.
 	 * @param gpu Whether to use the GPU or not.
 	 * @param callback A callback that will be called with the handle to the model.
 	 */
-	load(file: string, gpu: boolean, callback: (handle: Handle) => void): void;
+	export declare function load(
+		file: string,
+		gpu: boolean,
+		callback: (handle: Handle) => void,
+	): void;
 
 	/**
 	 * Release the memory of the model, it will be unusable after this.
 	 * @param handle The handle to the model.
 	 * @param callback A callback that will be called when the model is freed.
 	 */
-	free(handle: Handle, callback: () => void): void;
+	export declare function free(handle: Handle, callback: () => void): void;
 
 	/**
 	 * Transcribe a PCM buffer.
@@ -34,16 +40,35 @@ export interface Binding {
 	 * @param finish A callback that will be called when the transcription is finished.
 	 * @param progress A callback that will be called when a new result is available.
 	 */
-	transcribe<Format extends TranscribeFormat>(
+	export declare function transcribe<Format extends TranscribeFormat>(
 		handle: Handle,
 		pcm: Float32Array,
 		params: Partial<TranscribeParams<Format>>,
 		finish: (results: TranscribeResult<Format>[]) => void,
 		progress: (result: TranscribeResult<Format>) => void,
 	): void;
+
+	export declare class WhisperModel {
+		private _ctx;
+		constructor(handle: Handle);
+		get handle(): Handle | null;
+		get freed(): boolean;
+		/**
+		 * Release the memory of the model, it will be unusable after this.
+		 * It's safe to call this multiple times, but it will only free the model once.
+		 */
+		free(): Promise<void>;
+		/**
+		 * Load a model from a whisper weights file.
+		 * @param file The path to the whisper weights file.
+		 * @param gpu Whether to use the GPU or not.
+		 * @returns A promise that resolves to a {@link WhisperModel}.
+		 */
+		static load(file: string, gpu?: boolean): Promise<WhisperModel>;
+	}
 }
 
 /**
  * The native binding for the underlying C++ addon.
  */
-export const binding: Binding = module;
+export const binding: typeof Binding = module;

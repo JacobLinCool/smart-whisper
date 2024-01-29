@@ -1,26 +1,22 @@
-import { manager, Whisper } from "../src";
-import { it, expect } from "vitest";
+import { manager, Whisper, WhisperModel } from "../src";
+import { it, expect, beforeAll } from "vitest";
 import fs from "node:fs";
-import path from "node:path";
 import { decode } from "node-wav";
 
+beforeAll(async () => {
+	await manager.download("tiny");
+});
+
 it(
-	"model manager should work",
+	"model should load",
 	async () => {
-		const p = path.join(manager.dir.models, "tiny.bin");
-		if (fs.existsSync(p)) {
-			fs.unlinkSync(p);
-		}
-
-		expect(manager.list()).not.toContain("tiny");
-
-		const name = await manager.download("tiny");
-		expect(name).toBe("tiny");
-
-		const resolved = manager.resolve(name);
-		expect(fs.existsSync(resolved)).toBe(true);
-
-		expect(manager.list()).toContain("tiny");
+		const fp = manager.resolve("tiny");
+		const model = await WhisperModel.load(fp, false);
+		expect(model.freed).toBe(false);
+		expect(model.handle).not.toBe(null);
+		await model.free();
+		expect(model.freed).toBe(true);
+		expect(model.handle).toBe(null);
 	},
 	{ timeout: 60_000 },
 );

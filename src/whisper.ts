@@ -35,7 +35,7 @@ export class Whisper {
 		this._file = file;
 		this._config = {
 			offload: 300,
-			gpu: false,
+			gpu: true,
 			...config,
 		};
 	}
