@@ -34,8 +34,13 @@ export class TranscribeTask<Format extends TranscribeFormat> extends EventEmitte
 		params: Partial<TranscribeParams<Format>>,
 	): Promise<TranscribeResult<Format>[]> {
 		return new Promise((resolve) => {
+			const handle = this.model.handle;
+			if (!handle) {
+				throw new Error("Model has been freed");
+			}
+
 			binding.transcribe(
-				this.model.handle,
+				handle,
 				pcm,
 				params,
 				(results) => {
