@@ -6,7 +6,7 @@
     {
       "target_name": "smart-whisper",
       "sources": [
-          "src/binding.cc",
+          "src/binding/binding.cc",
           "src/binding/common.cc",
           "src/binding/model.cc",
           "src/binding/transcribe.cc",

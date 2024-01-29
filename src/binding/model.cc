@@ -114,8 +114,6 @@ Napi::Value WhisperModel::Load(const Napi::CallbackInfo &info) {
     whisper_context_params params;
     params.use_gpu = info.Length() == 2 ? info[1].As<Napi::Boolean>() : true;
 
-    auto deferred = Napi::Promise::Deferred::New(env);
-
     if (IsProduction(env.Global())) {
         whisper_log_set([](ggml_log_level level, const char *text, void *user_data) {}, nullptr);
     }
