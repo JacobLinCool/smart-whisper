@@ -17,4 +17,6 @@ class PromiseWorker : public Napi::AsyncWorker {
     Napi::Promise::Deferred promise;
 };
 
+bool IsProduction(const Napi::Object global_env);
+
 #endif

@@ -29,18 +29,6 @@ class LoadModelWorker : public PromiseWorker {
     whisper_context              *context;
 };
 
-bool IsProduction(const Napi::Object global_env) {
-    Napi::Object process = global_env.Get("process").As<Napi::Object>();
-    Napi::Object env = process.Get("env").As<Napi::Object>();
-    Napi::Value  nodeEnv = env.Get("NODE_ENV");
-    if (nodeEnv.IsString()) {
-        Napi::String nodeEnvStr = nodeEnv.As<Napi::String>();
-        std::string  envStr = nodeEnvStr.Utf8Value();
-        return envStr == "production";
-    }
-    return false;
-}
-
 class FreeModelWorker : public PromiseWorker {
    public:
     FreeModelWorker(Napi::Env &env, whisper_context *context)
@@ -113,10 +101,6 @@ Napi::Value WhisperModel::Load(const Napi::CallbackInfo &info) {
 
     whisper_context_params params;
     params.use_gpu = info.Length() == 2 ? info[1].As<Napi::Boolean>() : true;
-
-    if (IsProduction(env.Global())) {
-        whisper_log_set([](ggml_log_level level, const char *text, void *user_data) {}, nullptr);
-    }
 
     auto worker = new LoadModelWorker(env, model_path, params);
     worker->Queue();
