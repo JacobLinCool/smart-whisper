@@ -1,5 +1,11 @@
 # smart-whisper
 
+## 0.7.0
+
+### Minor Changes
+
+- [#30](https://github.com/JacobLinCool/smart-whisper/pull/30) [`e6a6966`](https://github.com/JacobLinCool/smart-whisper/commit/e6a6966af62ecd046a82c6403a4777f3fe884efb) Thanks [@silvioprog](https://github.com/silvioprog)! - Add EN models
+
 ## 0.6.1
 
 ### Patch Changes
