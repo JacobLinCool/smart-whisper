@@ -10,19 +10,25 @@ const ext = ".bin";
 
 fs.mkdirSync(models, { recursive: true });
 
+const BASE_MODELS_URL = "https://huggingface.co/ggerganov/whisper.cpp/resolve/main";
+
 /**
  * MODELS is an object that contains the URLs of different ggml whisper models.
  * Each model is represented by a key-value pair, where the key is the model name
  * and the value is the URL of the model.
  */
 export const MODELS = {
-	tiny: "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-tiny.bin",
-	small: "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-small.bin",
-	base: "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-base.bin",
-	medium: "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-medium.bin",
-	"large-v1": "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-large-v1.bin",
-	"large-v2": "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-large-v2.bin",
-	"large-v3": "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-large-v3.bin",
+	tiny: `${BASE_MODELS_URL}/ggml-tiny.bin`,
+	"tiny.en": `${BASE_MODELS_URL}/ggml-tiny.en.bin`,
+	small: `${BASE_MODELS_URL}/ggml-small.bin`,
+	"small.en": `${BASE_MODELS_URL}/ggml-small.en.bin`,
+	base: `${BASE_MODELS_URL}/ggml-base.bin`,
+	"base.en": `${BASE_MODELS_URL}/ggml-base.en.bin`,
+	medium: `${BASE_MODELS_URL}/ggml-medium.bin`,
+	"medium.en": `${BASE_MODELS_URL}/ggml-medium.en.bin`,
+	"large-v1": `${BASE_MODELS_URL}/ggml-large-v1.bin`,
+	"large-v2": `${BASE_MODELS_URL}/ggml-large-v2.bin`,
+	"large-v3": `${BASE_MODELS_URL}/ggml-large-v3.bin`,
 } as const;
 
 export type ModelName = keyof typeof MODELS | (string & {});
