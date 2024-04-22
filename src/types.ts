@@ -77,6 +77,8 @@ export interface TranscribeSimpleResult {
  */
 export interface TranscribeDetailedResult<TokenTimestamp extends boolean>
 	extends TranscribeSimpleResult {
+	/** The detected spoken language. */
+	lang: string;
 	/** The confidence level of the transcription, calculated by the average probability of the tokens. */
 	confidence: number;
 	/** The tokens generated during the transcription process. */
