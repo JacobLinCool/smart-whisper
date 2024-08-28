@@ -248,6 +248,9 @@ class TranscribeWorker : public Napi::AsyncProgressQueueWorker<int> {
                 confidence = confidence / (tokens - skips);
             }
 
+            segment.Set(
+                "lang",
+                Napi::String::New(Env(), whisper_lang_str(whisper_full_lang_id_from_state(state))));
             segment.Set("confidence", Napi::Number::New(Env(), confidence));
             segment.Set("tokens", tokens_array);
         }
@@ -304,6 +307,9 @@ class TranscribeWorker : public Napi::AsyncProgressQueueWorker<int> {
                     confidence = confidence / (tokens - skips);
                 }
 
+                segment.Set("lang",
+                            Napi::String::New(
+                                Env(), whisper_lang_str(whisper_full_lang_id_from_state(state))));
                 segment.Set("confidence", Napi::Number::New(Env(), confidence));
                 segment.Set("tokens", tokens_array);
             }
