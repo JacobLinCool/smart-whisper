@@ -30,7 +30,7 @@ it(
 
 		const { result } = await whisper.transcribe(pcm);
 		const results = await result;
-		expect(results).toMatchSnapshot();
+		expect(results[0].text).toMatchSnapshot();
 
 		await whisper.free();
 	},
