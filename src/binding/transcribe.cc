@@ -69,9 +69,6 @@ struct whisper_full_params whisper_full_params_from_js(Napi::Object o) {
         params.max_tokens = o.Get("max_tokens").As<Napi::Number>();
     }
 
-    if (o.Has("speed_up")) {
-        params.speed_up = o.Get("speed_up").As<Napi::Boolean>();
-    }
     if (o.Has("debug_mode")) {
         params.debug_mode = o.Get("debug_mode").As<Napi::Boolean>();
     }
