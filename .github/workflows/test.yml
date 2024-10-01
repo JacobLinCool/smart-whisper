@@ -42,7 +42,7 @@ jobs:
               continue-on-error: true
 
             - name: Setup PNPM
-              uses: pnpm/action-setup@v2
+              uses: pnpm/action-setup@v4
               with:
                   run_install: true
 
