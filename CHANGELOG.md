@@ -1,5 +1,13 @@
 # smart-whisper
 
+## 0.8.0
+
+### Minor Changes
+
+- [#48](https://github.com/JacobLinCool/smart-whisper/pull/48) [`c5ab7f2`](https://github.com/JacobLinCool/smart-whisper/commit/c5ab7f28f494a046aeca4d90013c4570b7dab2ae) Thanks [@JacobLinCool](https://github.com/JacobLinCool)! - Support large-v3-turbo, sync whisper.cpp to 2ef717b293fe93872cc3a03ca77942936a281959
+
+- [#43](https://github.com/JacobLinCool/smart-whisper/pull/43) [`b898a98`](https://github.com/JacobLinCool/smart-whisper/commit/b898a989fd232979f1c3ac9b873b035e5fb3ad6e) Thanks [@silvioprog](https://github.com/silvioprog)! - Detected spoken language
+
 ## 0.7.0
 
 ### Minor Changes
