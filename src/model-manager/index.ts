@@ -29,6 +29,7 @@ export const MODELS = {
 	"large-v1": `${BASE_MODELS_URL}/ggml-large-v1.bin`,
 	"large-v2": `${BASE_MODELS_URL}/ggml-large-v2.bin`,
 	"large-v3": `${BASE_MODELS_URL}/ggml-large-v3.bin`,
+	"large-v3-turbo": `${BASE_MODELS_URL}/ggml-large-v3-turbo.bin`,
 } as const;
 
 export type ModelName = keyof typeof MODELS | (string & {});
