@@ -60,11 +60,12 @@ function config() {
 	const COMPUTE_BACKEND = (_a = process.env.COMPUTE_BACKEND) != null ? _a : infer_backend();
 	const cfg2 = {
 		sources: [
-			"whisper.cpp/whisper.cpp",
-			"whisper.cpp/ggml.c",
-			"whisper.cpp/ggml-alloc.c",
-			"whisper.cpp/ggml-backend.c",
-			"whisper.cpp/ggml-quants.c",
+			"whisper.cpp/src/whisper.cpp",
+			"whisper.cpp/ggml/src/ggml.c",
+			"whisper.cpp/ggml/src/ggml-alloc.c",
+			"whisper.cpp/ggml/src/ggml-backend.c",
+			"whisper.cpp/ggml/src/ggml-quants.c",
+			"whisper.cpp/ggml/src/ggml-aarch64.c",
 		],
 		defines: [],
 		libraries: [],
@@ -77,7 +78,7 @@ function config() {
 			break;
 		}
 		case "metal": {
-			cfg2.sources.push("whisper.cpp/ggml-metal.m");
+			cfg2.sources.push("whisper.cpp/ggml/src/ggml-metal.m");
 			cfg2.defines.push("GGML_USE_ACCELERATE");
 			cfg2.defines.push("GGML_USE_METAL");
 			cfg2.libraries.push('"-framework Foundation"');
@@ -89,17 +90,6 @@ function config() {
 		case "openblas": {
 			cfg2.defines.push("GGML_USE_OPENBLAS");
 			cfg2.libraries.push("-lopenblas");
-			break;
-		}
-		case "clblast": {
-			cfg2.sources.push("whisper.cpp/ggml-opencl.cpp");
-			cfg2.defines.push("GGML_USE_CLBLAST");
-			cfg2.libraries.push("-lclblast");
-			if (import_node_os.default.platform() === "darwin") {
-				cfg2.libraries.push("-framework OpenCL");
-			} else {
-				cfg2.libraries.push("-lOpenCL");
-			}
 			break;
 		}
 		default: {
