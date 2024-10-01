@@ -8,8 +8,8 @@ importers:
     .:
         dependencies:
             node-addon-api:
-                specifier: ^7.0.0
-                version: 7.1.1
+                specifier: ^8.2.0
+                version: 8.2.0
         devDependencies:
             "@changesets/changelog-github":
                 specifier: ^0.5.0
@@ -2053,11 +2053,12 @@ packages:
         engines: { node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1 }
         hasBin: true
 
-    node-addon-api@7.1.1:
+    node-addon-api@8.2.0:
         resolution:
             {
-                integrity: sha512-5m3bsyrjFWE1xf7nz7YXdN4udnVtXK6/Yfgn5qnahL6bCkf2yKt4k3nuTKAtT4r3IG8JNR2ncsIMdZuAzJjHQQ==,
+                integrity: sha512-qnyuI2ROiCkye42n9Tj5aX1ns7rzj6n7zW1XReSnLSL9v/vbLeR6fJq6PU27YU/ICfYw6W7Ouk/N7cysWu/hlw==,
             }
+        engines: { node: ^18 || ^20 || >= 21 }
 
     node-fetch@2.7.0:
         resolution:
@@ -4153,7 +4154,7 @@ snapshots:
 
     nanoid@3.3.7: {}
 
-    node-addon-api@7.1.1: {}
+    node-addon-api@8.2.0: {}
 
     node-fetch@2.7.0:
         dependencies:
