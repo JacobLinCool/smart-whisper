@@ -1,5 +1,5 @@
 process.env.GGML_METAL_PATH_RESOURCES =
-	process.env.GGML_METAL_PATH_RESOURCES || path.join(__dirname, "../whisper.cpp");
+	process.env.GGML_METAL_PATH_RESOURCES || path.join(__dirname, "../whisper.cpp/ggml/src");
 
 import path from "node:path";
 import { TranscribeFormat, TranscribeParams, TranscribeResult } from "./types";
