@@ -39,7 +39,7 @@
 		"@changesets/changelog-github": "^0.5.0",
 		"@changesets/cli": "^2.27.1",
 		"@types/node": "^20.10.6",
-		"@types/node-wav": "^0.0.3",
+		"@types/node-wav": "^0.0.4",
 		"husky": "^8.0.3",
 		"lint-staged": "^15.2.0",
 		"node-wav": "^0.0.2",
